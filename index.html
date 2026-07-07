@@ -1,1 +1,1244 @@
 
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduForum - 15 Theme Lab & Academic Demo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for diverse styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Tailwind Configuration for theme usage -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                        firacode: ['Fira Code', 'monospace'],
+                        playfair: ['Playfair Display', 'serif'],
+                        merriweather: ['Merriweather', 'serif'],
+                        syne: ['Syne', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Variables - Sẽ được thay đổi động 100% bằng JavaScript */
+        :root {
+            --bg-app: #f1f5f9;
+            --bg-card: #ffffff;
+            --border-color: #cbd5e1;
+            --border-width: 1px;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --primary-btn: #1d4ed8;
+            --primary-btn-hover: #1e40af;
+            --primary-btn-text: #ffffff;
+            --primary-light: #eff6ff;
+            --primary-light-text: #1d4ed8;
+            --tag-bg: #eff6ff;
+            --tag-text: #1d4ed8;
+            --tag-border: #bfdbfe;
+            --sidebar-active-bg: #dbeafe;
+            --sidebar-active-text: #1e40af;
+            --sidebar-active-border: #1d4ed8;
+            --hero-bg: linear-gradient(135deg, #1d4ed8, #4f46e5);
+            --hero-text: #ffffff;
+            --card-hover-border: #94a3b8;
+            --card-hover-shadow: 0 10px 15px -3px rgba(29, 78, 216, 0.08);
+            --border-radius: 1rem;
+            --box-shadow-flat: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+            --transform-active: none;
+            --font-family: 'Inter', sans-serif;
+        }
+
+        /* Áp dụng quá trình chuyển đổi giao diện mềm mại, không bị giật lag */
+        .theme-transition {
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        color 0.3s ease, 
+                        border-radius 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        box-shadow 0.4s ease,
+                        transform 0.2s ease;
+        }
+
+        /* Khớp nối các biến màu CSS vào lớp tiện ích thuận tiện */
+        .theme-bg-app { background-color: var(--bg-app) !important; }
+        .theme-bg-card { background-color: var(--bg-card) !important; }
+        .theme-border { 
+            border-color: var(--border-color) !important; 
+            border-width: var(--border-width) !important;
+        }
+        .theme-text-main { color: var(--text-main) !important; }
+        .theme-text-muted { color: var(--text-muted) !important; }
+        
+        .theme-btn-primary { 
+            background-color: var(--primary-btn) !important; 
+            color: var(--primary-btn-text) !important;
+        }
+        .theme-btn-primary:hover { 
+            background-color: var(--primary-btn-hover) !important; 
+        }
+        .theme-primary-light {
+            background-color: var(--primary-light) !important;
+            color: var(--primary-light-text) !important;
+        }
+        .theme-tag {
+            background-color: var(--tag-bg) !important;
+            color: var(--tag-text) !important;
+            border-color: var(--tag-border) !important;
+            border-width: 1px;
+        }
+        .theme-sidebar-active {
+            background-color: var(--sidebar-active-bg) !important;
+            color: var(--sidebar-active-text) !important;
+            border-color: var(--sidebar-active-border) !important;
+            border-width: 1px;
+        }
+        
+        /* Cấu hình các cấp độ bo góc thích ứng theo theme */
+        .theme-rounded { border-radius: var(--border-radius) !important; }
+        .theme-rounded-inner { border-radius: calc(var(--border-radius) / 1.5) !important; }
+        .theme-rounded-pill { border-radius: calc(var(--border-radius) / 2) !important; }
+
+        /* Phong cách cuộn tùy biến tương thích màu theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-app);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-btn);
+        }
+    </style>
+</head>
+<body class="theme-bg-app theme-text-main min-h-screen flex flex-col theme-transition overflow-x-hidden antialiased" style="font-family: var(--font-family);">
+
+    <!-- HEADER ĐIỀU HƯỚNG CHUNG - ÁP DỤNG THEME 100% -->
+    <header class="theme-bg-card border-b theme-border px-4 sm:px-6 py-4 sticky top-0 z-50 theme-transition shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logo + Trạng thái Theme -->
+            <div class="flex items-center space-x-3 w-full md:w-auto">
+                <div class="theme-btn-primary p-2.5 theme-rounded-inner shadow-md font-black text-xl tracking-wider flex items-center justify-center theme-transition">
+                    🎓
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h1 class="text-xl font-black tracking-tight">EduForum</h1>
+                        <span id="active-theme-pill" class="text-[10px] theme-primary-light px-2.5 py-0.5 theme-rounded-pill font-bold theme-transition border theme-border">
+                            Theme: Học Sĩ Cổ Điển
+                        </span>
+                    </div>
+                    <p class="text-[11px] theme-text-muted font-medium theme-transition">Một diễn đàn học tập thế hệ mới. Toàn bộ UI thay đổi đồng bộ theo ý bạn!</p>
+                </div>
+            </div>
+
+            <!-- BỘ CHUYỂN TAB SONG SONG -->
+            <div class="flex items-center theme-bg-app p-1.5 theme-rounded-pill border theme-border text-xs w-full md:w-auto justify-center theme-transition">
+                <button onclick="switchTab('tab-demo')" id="btn-tab-demo" class="flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-btn-primary shadow-sm theme-transition">
+                    <span>🏠</span> Trang Chủ Diễn Đàn
+                </button>
+                <button onclick="switchTab('tab-settings')" id="btn-tab-settings" class="flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-text-muted hover:theme-text-main theme-transition">
+                    <span>⚙️</span> Cài Đặt Theme (15 Mẫu)
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- CONTAINER CHÍNH -->
+    <div class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+        <!-- ======================= TAB 1: DEMO TRANG CHỦ DIỄN ĐÀN (HỌC ĐƯỜNG) ======================= -->
+        <div id="panel-demo" class="space-y-6 block">
+            
+            <!-- TIÊU ĐIỂM BANNER TUẦN -->
+            <section class="theme-transition p-6 sm:p-8 text-white relative overflow-hidden flex flex-col md:flex-row justify-between items-start md:items-center gap-6 theme-rounded" 
+                     style="background: var(--hero-bg); color: var(--hero-text); box-shadow: var(--box-shadow-flat);">
+                <div class="relative z-10 max-w-2xl space-y-2">
+                    <span class="inline-block text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 bg-white/20 theme-rounded-pill">
+                        Chiến dịch ôn luyện trọng điểm 🏆
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-black leading-tight">Tuyển tập đề thi thử Đánh Giá Năng Lực & THPT Quốc Gia năm 2026</h2>
+                    <p class="text-xs sm:text-sm opacity-90 leading-relaxed">Bộ ngân hàng câu hỏi vận dụng cao do ban chuyên môn tổng biên soạn. Đầy đủ lời giải chi tiết và đáp án trực tuyến, hoàn toàn phi lợi nhuận cho học sinh cả nước.</p>
+                </div>
+                <div class="flex items-center space-x-3 bg-black/15 px-4 py-3 rounded-2xl border border-white/10 relative z-10">
+                    <span class="text-2xl">⚡</span>
+                    <div class="text-[11px] leading-tight">
+                        <p class="font-bold">Livestream giải đề</p>
+                        <p class="opacity-80">20h00 tối nay cùng các thủ khoa trường chuyên</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BỐ CỤC DIỄN ĐÀN 2 CỘT -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- CỘT PHỤ (SIDEBAR): lg:col-span-4 -->
+                <div class="lg:col-span-4 space-y-5">
+                    
+                    <!-- HỘP ĐẶT CÂU HỎI NHANH -->
+                    <div class="theme-transition p-5 border theme-bg-card theme-border theme-rounded" style="box-shadow: var(--box-shadow-flat);">
+                        <h4 class="text-xs font-extrabold uppercase tracking-widest mb-3 opacity-80">Giải Đáp Thắc Mắc</h4>
+                        <p class="text-xs theme-text-muted mb-4 theme-transition leading-relaxed">Đang gặp câu hỏi hóc búa môn Toán, đề viết Văn bí từ hay cấu trúc ngữ pháp Tiếng Anh lạ? Đăng ngay lên đây để nhận gợi ý giải cực chi tiết.</p>
+                        <button onclick="alertBox('Hệ thống diễn đàn mẫu đang chạy ở chế độ Theme Lab. Bạn có thể chuyển sang Tab Cài đặt để khám phá các diện mạo mới!')" class="w-full py-2.5 font-bold text-xs theme-btn-primary theme-rounded-pill theme-transition shadow-sm">
+                            Đặt Câu Hỏi Học Tập Mới ✍️
+                        </button>
+                    </div>
+
+                    <!-- DANH SÁCH MÔN HỌC -->
+                    <div class="theme-transition p-5 border theme-bg-card theme-border theme-rounded" style="box-shadow: var(--box-shadow-flat);">
+                        <h4 class="text-xs font-extrabold uppercase tracking-widest mb-3 opacity-80">Các môn học hot</h4>
+                        <div class="space-y-1.5 text-xs font-bold">
+                            <div class="theme-transition p-3 flex items-center justify-between cursor-pointer theme-sidebar-active theme-rounded-pill">
+                                <span class="flex items-center space-x-2"><span>📐</span> <span>Toán Học Cao Cấp & VDC</span></span>
+                                <span class="text-[10px] theme-transition px-2.5 py-0.5 theme-rounded-pill theme-tag">320 bài</span>
+                            </div>
+                            <div class="theme-transition p-3 flex items-center justify-between cursor-pointer hover:bg-slate-500/5 theme-rounded-pill">
+                                <span class="flex items-center space-x-2"><span>🇬🇧</span> <span class="opacity-80">Tiếng Anh Học Thuật (IELTS)</span></span>
+                                <span class="text-[10px] theme-transition px-2.5 py-0.5 theme-rounded-pill theme-tag">245 bài</span>
+                            </div>
+                            <div class="theme-transition p-3 flex items-center justify-between cursor-pointer hover:bg-slate-500/5 theme-rounded-pill">
+                                <span class="flex items-center space-x-2"><span>💻</span> <span class="opacity-80">Tin Học & Lập Trình Phổ Thông</span></span>
+                                <span class="text-[10px] theme-transition px-2.5 py-0.5 theme-rounded-pill theme-tag">180 bài</span>
+                            </div>
+                            <div class="theme-transition p-3 flex items-center justify-between cursor-pointer hover:bg-slate-500/5 theme-rounded-pill">
+                                <span class="flex items-center space-x-2"><span>🧪</span> <span class="opacity-80">Hóa Học Vô Cơ & Hữu Cơ</span></span>
+                                <span class="text-[10px] theme-transition px-2.5 py-0.5 theme-rounded-pill theme-tag">142 bài</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- BẢNG VINH DANH HỌC VIÊN CHĂM CHỈ -->
+                    <div class="theme-transition p-5 border theme-bg-card theme-border theme-rounded" style="box-shadow: var(--box-shadow-flat);">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xs font-extrabold uppercase tracking-widest opacity-80">Vinh danh tuần này 🏆</h4>
+                            <span class="text-[9px] font-bold theme-primary-light px-2 py-0.5 theme-rounded-pill">Top Điểm Số</span>
+                        </div>
+                        <div class="space-y-4 text-xs">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full theme-btn-primary flex items-center justify-center font-bold font-mono">1</div>
+                                    <div>
+                                        <h5 class="font-bold leading-none">Khánh Linh Nguyễn</h5>
+                                        <span class="text-[10px] theme-text-muted">Biên dịch viên IELTS cốt cán</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold">4,820 XP</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-slate-500/20 theme-text-main flex items-center justify-center font-bold font-mono">2</div>
+                                    <div>
+                                        <h5 class="font-bold leading-none font-sans">Thầy Minh Luân</h5>
+                                        <span class="text-[10px] theme-text-muted">Chuyên gia Toán Hàm Số</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold">4,150 XP</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-slate-500/20 theme-text-main flex items-center justify-center font-bold font-mono">3</div>
+                                    <div>
+                                        <h5 class="font-bold leading-none">Hoàng Developer</h5>
+                                        <span class="text-[10px] theme-text-muted">Anh tài học máy tin học</span>
+                                    </div>
+                                </div>
+                                <span class="font-bold">3,980 XP</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CỘT CHÍNH (BÀI ĐĂNG DIỄN ĐÀN): lg:col-span-8 -->
+                <div class="lg:col-span-8 space-y-4">
+                    
+                    <!-- BÀI ĐĂNG 1: TOÁN HỌC (ĐÃ GHIM) -->
+                    <article class="theme-transition p-5 sm:p-6 border relative transition-all duration-300" 
+                             style="background-color: var(--bg-card); border-color: var(--border-color); border-width: var(--border-width); border-radius: var(--border-radius); box-shadow: var(--box-shadow-flat);">
+                        <div class="absolute top-0 right-0">
+                            <span class="text-[9px] font-black bg-amber-500 text-black px-3 py-1 uppercase tracking-wider" 
+                                  style="border-bottom-left-radius: calc(var(--border-radius) / 2); border-top-right-radius: calc(var(--border-radius) - var(--border-width));">
+                                📌 GHIM BÀI HỌC
+                            </span>
+                        </div>
+
+                        <!-- Người Đăng -->
+                        <div class="flex items-center space-x-3 mb-4 text-xs">
+                            <div class="w-9 h-9 rounded-full theme-btn-primary flex items-center justify-center font-bold">ML</div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-extrabold">Thầy giáo Minh Luân</span>
+                                    <span class="text-[9px] bg-red-600 text-white px-2 py-0.5 rounded font-black">GIÁO VIÊN ƯU TÚ</span>
+                                </div>
+                                <span class="text-[10px]" style="color: var(--text-muted);">Đăng 2 giờ trước • 📐 Toán học 12</span>
+                            </div>
+                        </div>
+
+                        <!-- Tiêu Đề -->
+                        <h3 class="text-base sm:text-lg font-extrabold leading-snug mb-2 hover:opacity-80 cursor-pointer">
+                            Lớp ôn toán: Tổng hợp mẹo nhẩm nhanh trắc nghiệm Phương trình mũ & Logarit trong đề ĐHQG
+                        </h3>
+
+                        <!-- Nội dung tóm tắt -->
+                        <p class="text-xs sm:text-sm mb-4 leading-relaxed" style="color: var(--text-muted);">
+                            Để chuẩn bị cho kỳ thi sắp tới, tôi đã hệ thống lại 12 mẫu câu hỏi thường gặp nhất liên quan đến hàm số mũ và logarit chứa tham số m. Các em có thể áp dụng ngay kỹ thuật chọn khoảng thử kết hợp Casio để khoanh nhanh đáp án đúng trong vòng dưới 30 giây...
+                        </p>
+
+                        <!-- Hashtags -->
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="text-[10px] theme-transition px-2.5 py-1 font-bold" 
+                                  style="background-color: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-border); border-width: 1px; border-radius: calc(var(--border-radius) / 2.5);">
+                                #toan12
+                            </span>
+                            <span class="text-[10px] theme-transition px-2.5 py-1 font-bold" 
+                                  style="background-color: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-border); border-width: 1px; border-radius: calc(var(--border-radius) / 2.5);">
+                                #dgnl_2026
+                            </span>
+                            <span class="text-[10px] theme-transition px-2.5 py-1 font-bold" 
+                                  style="background-color: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-border); border-width: 1px; border-radius: calc(var(--border-radius) / 2.5);">
+                                #meo_casio
+                            </span>
+                        </div>
+
+                        <!-- Tương Tác Footer -->
+                        <div class="flex items-center justify-between text-xs pt-4 border-t" style="border-color: var(--border-color); color: var(--text-muted);">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-bold flex items-center gap-1.5 cursor-pointer hover:text-red-500">❤️ 248 Thích</span>
+                                <span class="font-bold flex items-center gap-1.5 cursor-pointer">💬 64 Thảo luận</span>
+                            </div>
+                            <span class="text-[11px] font-semibold">Tài liệu đính kèm (PDF) 📎</span>
+                        </div>
+                    </article>
+
+                    <!-- BÀI ĐĂNG 2: TIẾNG ANH (HỎI ĐÁP) -->
+                    <article class="theme-transition p-5 sm:p-6 border transition-all duration-300" 
+                             style="background-color: var(--bg-card); border-color: var(--border-color); border-width: var(--border-width); border-radius: var(--border-radius); box-shadow: var(--box-shadow-flat);">
+                        
+                        <!-- Người Đăng -->
+                        <div class="flex items-center space-x-3 mb-4 text-xs">
+                            <div class="w-9 h-9 rounded-full theme-primary-light flex items-center justify-center font-bold">KL</div>
+                            <div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-extrabold">Khánh Linh Nguyễn</span>
+                                    <span class="text-[9px] theme-btn-primary px-2 py-0.5 rounded font-black theme-transition">SĨ TỬ CHĂM CHỈ</span>
+                                </div>
+                                <span class="text-[10px]" style="color: var(--text-muted);">Đăng 5 giờ trước • 🇬🇧 Tiếng Anh</span>
+                            </div>
+                        </div>
+
+                        <!-- Tiêu Đề -->
+                        <h3 class="text-base sm:text-lg font-extrabold leading-snug mb-2 hover:opacity-80 cursor-pointer">
+                            Phương pháp ghi nhớ nhanh 50 collocations nâng cao chủ đề Môi trường và Đô thị hóa?
+                        </h3>
+
+                        <!-- Nội dung tóm tắt -->
+                        <p class="text-xs sm:text-sm mb-4 leading-relaxed" style="color: var(--text-muted);">
+                            Mọi người ơi, có phương pháp hay sơ đồ trực quan nào để nhớ sâu các collocations mức độ C1/C2 mà không bị nhầm lẫn giới từ đi kèm không ạ? Em chuẩn bị làm bài viết Writing Task 2 mà cảm giác dùng từ vẫn chưa được học thuật và tự nhiên lắm...
+                        </p>
+
+                        <!-- Hashtags -->
+                        <div class="flex flex-wrap gap-1.5 mb-4">
+                            <span class="text-[10px] theme-transition px-2.5 py-1 font-bold" 
+                                  style="background-color: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-border); border-width: 1px; border-radius: calc(var(--border-radius) / 2.5);">
+                                #ielts_writing
+                            </span>
+                            <span class="text-[10px] theme-transition px-2.5 py-1 font-bold" 
+                                  style="background-color: var(--tag-bg); color: var(--tag-text); border-color: var(--tag-border); border-width: 1px; border-radius: calc(var(--border-radius) / 2.5);">
+                                #collocations
+                            </span>
+                        </div>
+
+                        <!-- Tương Tác Footer -->
+                        <div class="flex items-center justify-between text-xs pt-4 border-t" style="border-color: var(--border-color); color: var(--text-muted);">
+                            <div class="flex items-center space-x-4">
+                                <span class="font-bold flex items-center gap-1.5 cursor-pointer hover:text-red-500">❤️ 95 Thích</span>
+                                <span class="font-bold flex items-center gap-1.5 cursor-pointer">💬 18 Trả lời</span>
+                            </div>
+                            <span class="text-[11px] font-semibold text-emerald-500">Đã có lời giải chuẩn 🗸</span>
+                        </div>
+                    </article>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ======================= TAB 2: PHÒNG THÍ NGHIỆM - 15 THEME MẪU ======================= -->
+        <div id="panel-settings" class="space-y-6 hidden">
+            
+            <!-- THÔNG TIN & HƯỚNG DẪN -->
+            <div class="theme-transition p-5 border theme-bg-card theme-border theme-rounded" style="box-shadow: var(--box-shadow-flat);">
+                <div class="flex items-center space-x-3 mb-2">
+                    <span class="text-2xl">⚡</span>
+                    <h3 class="text-base font-extrabold">Phòng Thí Nghiệm & Sáng Tạo Giao Diện</h3>
+                </div>
+                <p class="text-xs theme-text-muted theme-transition leading-relaxed">
+                    Tại đây, bạn có thể tự do thử nghiệm **15 kiểu phong thái giao diện hoàn toàn khác biệt**. Khi bạn nhấn vào một thẻ bất kỳ, toàn bộ hệ thống (kể cả bảng thiết kế bạn đang nhìn này) sẽ đồng bộ màu sắc, độ đậm viền, bo góc và phông chữ theo cấu hình của Theme đó.
+                </p>
+            </div>
+
+            <!-- CHỌN NHANH DANH MỤC THEME -->
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterPresetCategory('all')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-500/10 hover:bg-slate-500/20 theme-transition">Tất cả ({15})</button>
+                <button onclick="filterPresetCategory('academic')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-500/10 hover:bg-slate-500/20 theme-transition">Học thuật / Đọc lâu</button>
+                <button onclick="filterPresetCategory('comfort')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-500/10 hover:bg-slate-500/20 theme-transition">Thư giãn / Pastel</button>
+                <button onclick="filterPresetCategory('creative')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-slate-500/10 hover:bg-slate-500/20 theme-transition">Phá cách / Độc lạ</button>
+            </div>
+
+            <!-- GRID DANH SÁCH 15 THEME MẪU SỐNG ĐỘNG -->
+            <div id="settings-themes-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Sẽ tự động chèn bằng JavaScript -->
+            </div>
+
+            <!-- TRÌNH XUẤT CẤU HÌNH THEME ĐÃ CHỌN -->
+            <div class="theme-transition p-6 border theme-bg-card theme-border theme-rounded" style="box-shadow: var(--box-shadow-flat);">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <h4 class="font-extrabold text-sm uppercase tracking-wider">Cấu Hình Lập Trình Viên (Developer Sandbox)</h4>
+                        <p class="text-xs theme-text-muted theme-transition">Sao chép cấu hình màu sắc hiện tại để đưa vào dự án của riêng bạn</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="switchSandboxTab('tailwind')" id="sb-tab-tw" class="px-3.5 py-1.5 text-xs font-bold rounded-lg theme-btn-primary theme-transition shadow-sm">Tailwind Config</button>
+                        <button onclick="switchSandboxTab('css')" id="sb-tab-css" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-500/10 theme-text-main hover:bg-slate-500/20 theme-transition">CSS Variables</button>
+                    </div>
+                </div>
+
+                <div class="relative">
+                    <button onclick="copyActiveCode()" class="absolute top-3 right-3 px-3 py-1.5 bg-black/40 hover:bg-black/60 text-white font-mono text-[10px] font-bold rounded-md theme-transition select-none">
+                        Sao chép mã 📋
+                    </button>
+                    <pre id="sandbox-code-pre" class="text-xs p-5 bg-black/95 text-emerald-400 font-mono rounded-xl overflow-x-auto max-h-72 leading-relaxed">
+                        <!-- Sẽ tự động kết xuất bằng JavaScript -->
+                    </pre>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- KHUNG HỘP THÔNG BÁO TỰ CHẾ (Hạn chế sử dụng alert thô sơ) -->
+    <div id="custom-alert-box" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 items-center justify-center p-4 hidden">
+        <div class="theme-transition w-full max-w-sm p-6 border theme-bg-card theme-border theme-rounded shadow-2xl text-center space-y-4">
+            <div class="text-3xl">💡</div>
+            <h4 class="font-extrabold text-sm uppercase tracking-wider">Thông báo hệ thống</h4>
+            <p id="custom-alert-message" class="text-xs theme-text-muted theme-transition leading-relaxed">Nội dung thông báo...</p>
+            <button onclick="closeAlertBox()" class="px-6 py-2 text-xs font-bold theme-rounded-pill theme-btn-primary theme-transition w-full shadow-md">
+                Đồng ý / Đóng
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT HỆ THỐNG & CƠ SỞ DỮ LIỆU 15 THEME CHUYÊN SÂU -->
+    <script>
+        // --- CƠ SỞ DỮ LIỆU 15 THEMES ĐỒNG BỘ 100% GIAO DIỆN ---
+        const MASTER_THEMES = [
+            {
+                id: 'classic-scholar',
+                name: 'Classic Scholar',
+                vietnameseName: 'Học Sĩ Cổ Điển',
+                category: 'academic',
+                categoryLabel: 'Học thuật / Tập trung',
+                description: 'Tông xanh dương mực Thanh Nghị quý phái kết hợp nền kem sữa nhẹ nhã nhặn. Tăng khả năng đọc, tạo cảm giác thư viện yên tĩnh học thuật.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#f1f5f9',
+                    bgCard: '#ffffff',
+                    borderColor: '#cbd5e1',
+                    borderWidth: '1px',
+                    textMain: '#0f172a',
+                    textMuted: '#475569',
+                    primaryBtn: '#1d4ed8',
+                    primaryBtnHover: '#1e40af',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#eff6ff',
+                    primaryLightText: '#1d4ed8',
+                    tagBg: '#eff6ff',
+                    tagText: '#1d4ed8',
+                    tagBorder: '#bfdbfe',
+                    sidebarActiveBg: '#dbeafe',
+                    sidebarActiveText: '#1e40af',
+                    sidebarActiveBorder: '#1d4ed8',
+                    heroBg: 'linear-gradient(135deg, #1d4ed8, #4f46e5)',
+                    heroText: '#ffffff',
+                    cardHoverBorder: '#94a3b8',
+                    cardHoverShadow: '0 10px 15px -3px rgba(29, 78, 216, 0.08)',
+                    borderRadius: '1rem',
+                    boxShadowFlat: '0 1px 3px 0 rgba(0, 0, 0, 0.05)',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'cozy-matcha',
+                name: 'Cozy Matcha Latte',
+                vietnameseName: 'Trà Xanh Thư Thái',
+                category: 'comfort',
+                categoryLabel: 'Thư thái / Mộc mạc',
+                description: 'Lấy cảm hứng từ những ly trà xanh ấm áp, dịu mắt hoàn hảo khi phải đọc sách và luyện đề liên tục nhiều giờ.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#f3f4ee',
+                    bgCard: '#ffffff',
+                    borderColor: '#ced4bc',
+                    borderWidth: '1px',
+                    textMain: '#2d381c',
+                    textMuted: '#607044',
+                    primaryBtn: '#4a6b28',
+                    primaryBtnHover: '#39531e',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#f1f4eb',
+                    primaryLightText: '#4a6b28',
+                    tagBg: '#f1f4eb',
+                    tagText: '#4a6b28',
+                    tagBorder: '#dbe3cb',
+                    sidebarActiveBg: '#e2e9d7',
+                    sidebarActiveText: '#2d381c',
+                    sidebarActiveBorder: '#4a6b28',
+                    heroBg: 'linear-gradient(135deg, #4a6b28, #71934c)',
+                    heroText: '#ffffff',
+                    cardHoverBorder: '#aab591',
+                    cardHoverShadow: '0 10px 15px -3px rgba(74, 107, 40, 0.05)',
+                    borderRadius: '1.25rem',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'cyberpunk-neon',
+                name: 'Neon Cybernight',
+                vietnameseName: 'Cú Đêm Lập Trình',
+                category: 'creative',
+                categoryLabel: 'Tương lai / Giả tưởng',
+                description: 'Màu nền vũ trụ đen sâu sẫm phối hồng Neon rực rỡ và lam ngọc, dành riêng cho dân IT, chuyên gia mật mã và thiết kế đồ họa.',
+                font: 'font-firacode',
+                fontLabel: 'Fira Code (Monospace)',
+                styles: {
+                    bgApp: '#06060f',
+                    bgCard: '#0f0f22',
+                    borderColor: '#ff007f3d',
+                    borderWidth: '1px',
+                    textMain: '#ffffff',
+                    textMuted: '#00ffffcc',
+                    primaryBtn: '#ff007f',
+                    primaryBtnHover: '#e60072',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#240924',
+                    primaryLightText: '#ff007f',
+                    tagBg: '#ff007f15',
+                    tagText: '#ff007f',
+                    tagBorder: '#ff007f4d',
+                    sidebarActiveBg: '#00ffff15',
+                    sidebarActiveText: '#00ffff',
+                    sidebarActiveBorder: '#00ffff',
+                    heroBg: 'linear-gradient(135deg, #180529, #051a24)',
+                    heroText: '#00ffff',
+                    cardHoverBorder: '#00ffff88',
+                    cardHoverShadow: '0 0 15px rgba(0, 255, 255, 0.15)',
+                    borderRadius: '0px',
+                    boxShadowFlat: 'none',
+                    transformActive: 'translateY(-2px)'
+                }
+            },
+            {
+                id: 'editorial-ivory',
+                name: 'Editorial Swiss Ivory',
+                vietnameseName: 'Tạp Chí Tối Giản',
+                category: 'academic',
+                categoryLabel: 'Tối giản / Sang trọng',
+                description: 'Trang nghiêm như trang báo in Thụy Sĩ sang trọng. Tập trung tuyệt đối vào vẻ đẹp của nghệ thuật sắp đặt chữ và khoảng lặng thị giác.',
+                font: 'font-playfair',
+                fontLabel: 'Playfair Display (Serif)',
+                styles: {
+                    bgApp: '#fcfaf2',
+                    bgCard: '#fcfaf2',
+                    borderColor: '#1a1a1a',
+                    borderWidth: '0 0 1.5px 0',
+                    textMain: '#1a1a1a',
+                    textMuted: '#555555',
+                    primaryBtn: '#1a1a1a',
+                    primaryBtnHover: '#333333',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#eae6db',
+                    primaryLightText: '#1a1a1a',
+                    tagBg: '#eae6db',
+                    tagText: '#1a1a1a',
+                    tagBorder: '#1a1a1a',
+                    sidebarActiveBg: '#eae6db',
+                    sidebarActiveText: '#1a1a1a',
+                    sidebarActiveBorder: '#1a1a1a',
+                    heroBg: '#eae6db',
+                    heroText: '#1a1a1a',
+                    cardHoverBorder: '#1a1a1a',
+                    cardHoverShadow: 'none',
+                    borderRadius: '0px',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'sunset-boulevard',
+                name: 'Sunset Blvd 1980',
+                vietnameseName: 'Đại Lộ Hoàng Hôn',
+                category: 'creative',
+                categoryLabel: 'Hoài niệm / Vintage',
+                description: 'Gợi tưởng buổi chiều lãng mạn với ánh sáng ấm rực rỡ màu đất nung nồng ấm và màu hoa oải hương tím hoài cổ dịu dàng.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#23121b',
+                    bgCard: '#2e1925',
+                    borderColor: '#4d2b3f',
+                    borderWidth: '1px',
+                    textMain: '#ffe1d0',
+                    textMuted: '#af8a9d',
+                    primaryBtn: '#ff7e67',
+                    primaryBtnHover: '#e66852',
+                    primaryBtnText: '#23121b',
+                    primaryLight: '#3f1f31',
+                    primaryLightText: '#ff7e67',
+                    tagBg: '#3f1f31',
+                    tagText: '#ffaa64',
+                    tagBorder: '#5c2d47',
+                    sidebarActiveBg: '#512a3f',
+                    sidebarActiveText: '#ffe1d0',
+                    sidebarActiveBorder: '#ff7e67',
+                    heroBg: 'linear-gradient(135deg, #ff7e67, #7c2d53)',
+                    heroText: '#ffe1d0',
+                    cardHoverBorder: '#ff7e67a0',
+                    cardHoverShadow: '0 8px 20px rgba(255, 126, 103, 0.08)',
+                    borderRadius: '1.25rem',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'nordic-forest',
+                name: 'Nordic Deep Pine',
+                vietnameseName: 'Thông Xanh Bắc Âu',
+                category: 'comfort',
+                categoryLabel: 'Thanh lịch / Bình yên',
+                description: 'Tận hưởng sự tĩnh lặng của những khu rừng rêu thông phủ tuyết trắng. Kết hợp hoàn hảo tông xanh rêu sẫm huyền bí và xám sương mờ.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#f1f4f2',
+                    bgCard: '#ffffff',
+                    borderColor: '#cbd9d1',
+                    borderWidth: '1px',
+                    textMain: '#1c2d25',
+                    textMuted: '#516a5e',
+                    primaryBtn: '#2c4a3c',
+                    primaryBtnHover: '#1f352b',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#eef3f0',
+                    primaryLightText: '#2c4a3c',
+                    tagBg: '#eef3f0',
+                    tagText: '#2c4a3c',
+                    tagBorder: '#cbd9d1',
+                    sidebarActiveBg: '#dee7e2',
+                    sidebarActiveText: '#1c2d25',
+                    sidebarActiveBorder: '#2c4a3c',
+                    heroBg: 'linear-gradient(135deg, #2c4a3c, #4a6f5e)',
+                    heroText: '#ffffff',
+                    cardHoverBorder: '#96b2a4',
+                    cardHoverShadow: '0 10px 15px -3px rgba(44, 74, 60, 0.04)',
+                    borderRadius: '0.75rem',
+                    boxShadowFlat: '0 1px 2px 0 rgba(0,0,0,0.03)',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'sakura-sweet',
+                name: 'Sakura Sweet Pastel',
+                vietnameseName: 'Mộng Mơ Anh Đào',
+                category: 'comfort',
+                categoryLabel: 'Hồng phấn / Dễ thương',
+                description: 'Trẻ trung, dịu nhẹ ngập tràn hứng khởi sáng tạo như cánh hoa đào xuân nở rộ, vô cùng hợp ý các học sinh đam mê học thuật nghệ thuật.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#fff4f6',
+                    bgCard: '#ffffff',
+                    borderColor: '#ffd5dd',
+                    borderWidth: '1px',
+                    textMain: '#5a3d41',
+                    textMuted: '#a38085',
+                    primaryBtn: '#ff92a4',
+                    primaryBtnHover: '#f27e91',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#fff0f2',
+                    primaryLightText: '#ff6982',
+                    tagBg: '#fff0f2',
+                    tagText: '#ff6982',
+                    tagBorder: '#ffd5dd',
+                    sidebarActiveBg: '#ffe1e6',
+                    sidebarActiveText: '#ff5270',
+                    sidebarActiveBorder: '#ff92a4',
+                    heroBg: 'linear-gradient(135deg, #ffb3c1, #ffe5ec)',
+                    heroText: '#5a3d41',
+                    cardHoverBorder: '#ff92a488',
+                    cardHoverShadow: '0 10px 20px rgba(255, 146, 164, 0.1)',
+                    borderRadius: '2rem',
+                    boxShadowFlat: '0 2px 8px rgba(255, 180, 193, 0.05)',
+                    transformActive: 'translateY(-1px)'
+                }
+            },
+            {
+                id: 'dracula-velvet',
+                name: 'Dracula Gothic Red',
+                vietnameseName: 'Thư Viện Cổ Điển',
+                category: 'academic',
+                categoryLabel: 'Bóng tối / Cổ kính',
+                description: 'Cảm giác như được bước vào không gian của những thư viện lâu đời châu Âu, với ánh nến lấp lánh và rèm nhung đỏ mận quyến rũ.',
+                font: 'font-merriweather',
+                fontLabel: 'Merriweather (Serif)',
+                styles: {
+                    bgApp: '#150f11',
+                    bgCard: '#1f161a',
+                    borderColor: '#c49b6c33',
+                    borderWidth: '1px',
+                    textMain: '#f5ebd9',
+                    textMuted: '#a58e95',
+                    primaryBtn: '#7c1c33',
+                    primaryBtnHover: '#611224',
+                    primaryBtnText: '#f5ebd9',
+                    primaryLight: '#2c1920',
+                    primaryLightText: '#c49b6c',
+                    tagBg: '#2c1920',
+                    tagText: '#c49b6c',
+                    tagBorder: '#c49b6c50',
+                    sidebarActiveBg: '#3d252f',
+                    sidebarActiveText: '#f5ebd9',
+                    sidebarActiveBorder: '#c49b6c',
+                    heroBg: 'linear-gradient(135deg, #4c0e1b, #1f161a)',
+                    heroText: '#f5ebd9',
+                    cardHoverBorder: '#c49b6c88',
+                    cardHoverShadow: '0 8px 25px rgba(196, 155, 108, 0.05)',
+                    borderRadius: '0.5rem',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'y2k-brutalism',
+                name: 'Neo-Y2K Brutalism',
+                vietnameseName: 'Tân Thô Mộc Y2K',
+                category: 'creative',
+                categoryLabel: 'Phá cách / Cá tính',
+                description: 'Nổi loạn thẩm mỹ với viền đen siêu đậm phẳng lì cùng những mảng màu cực kỳ sặc sỡ và khối bóng đổ cứng cáp đầy tự tin.',
+                font: 'font-firacode',
+                fontLabel: 'Fira Code (Monospace)',
+                styles: {
+                    bgApp: '#eedeff',
+                    bgCard: '#ffffff',
+                    borderColor: '#000000',
+                    borderWidth: '3px',
+                    textMain: '#000000',
+                    textMuted: '#2a2a2a',
+                    primaryBtn: '#00ffd1',
+                    primaryBtnHover: '#00ccaa',
+                    primaryBtnText: '#000000',
+                    primaryLight: '#ff92e1',
+                    primaryLightText: '#000000',
+                    tagBg: '#ff92e1',
+                    tagText: '#000000',
+                    tagBorder: '#000000',
+                    sidebarActiveBg: '#f3ff33',
+                    sidebarActiveText: '#000000',
+                    sidebarActiveBorder: '#000000',
+                    heroBg: '#f3ff33',
+                    heroText: '#000000',
+                    cardHoverBorder: '#000000',
+                    cardHoverShadow: '6px 6px 0px 0px rgba(0,0,0,1)',
+                    borderRadius: '0px',
+                    boxShadowFlat: '3px 3px 0px 0px rgba(0,0,0,1)',
+                    transformActive: 'translate(-2px, -2px)'
+                }
+            },
+            {
+                id: 'ocean-depth',
+                name: 'Frozen Ocean Depth',
+                vietnameseName: 'Thẳm Sâu Đại Dương',
+                category: 'academic',
+                categoryLabel: 'Chuyên nghiệp / Sâu lắng',
+                description: 'Bóng tối thanh bình nơi đáy sâu xanh thẳm của đại dương với các chi tiết màu neon băng giá. Tượng trưng cho độ sâu trí tuệ học vấn.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#020b14',
+                    bgCard: '#061626',
+                    borderColor: '#0b263d',
+                    borderWidth: '1px',
+                    textMain: '#e1effa',
+                    textMuted: '#6889a3',
+                    primaryBtn: '#00e5ff',
+                    primaryBtnHover: '#00bccc',
+                    primaryBtnText: '#020b14',
+                    primaryLight: '#051d33',
+                    primaryLightText: '#00e5ff',
+                    tagBg: '#051d33',
+                    tagText: '#00e5ff',
+                    tagBorder: '#0b263d',
+                    sidebarActiveBg: '#092d4c',
+                    sidebarActiveText: '#ffffff',
+                    sidebarActiveBorder: '#00e5ff',
+                    heroBg: 'linear-gradient(135deg, #01080f, #092c4b)',
+                    heroText: '#00e5ff',
+                    cardHoverBorder: '#00e5ff66',
+                    cardHoverShadow: '0 8px 25px rgba(0, 229, 255, 0.08)',
+                    borderRadius: '1.25rem',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'desert-oasis',
+                name: 'Desert & Oasis Teal',
+                vietnameseName: 'Ốc Đảo Sa Mạc',
+                category: 'comfort',
+                categoryLabel: 'Cát ấm & Nước xanh',
+                description: 'Tông màu cát sa mạc hoang dã kết hợp màu đất nung terra ấm nồng điểm xuyết sắc xanh lục của dòng nước ốc đảo cực dịu mát.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#f4ede1',
+                    bgCard: '#ffffff',
+                    borderColor: '#dfcdb9',
+                    borderWidth: '1px',
+                    textMain: '#4a331c',
+                    textMuted: '#8b735c',
+                    primaryBtn: '#d35400',
+                    primaryBtnHover: '#b54700',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#e4f5f2',
+                    primaryLightText: '#16a085',
+                    tagBg: '#e4f5f2',
+                    tagText: '#16a085',
+                    tagBorder: '#bee4dc',
+                    sidebarActiveBg: '#eedbc6',
+                    sidebarActiveText: '#4a331c',
+                    sidebarActiveBorder: '#d35400',
+                    heroBg: 'linear-gradient(135deg, #d35400, #1abc9c)',
+                    heroText: '#ffffff',
+                    cardHoverBorder: '#d3540088',
+                    cardHoverShadow: '0 10px 15px rgba(211, 84, 0, 0.04)',
+                    borderRadius: '1.5rem',
+                    boxShadowFlat: '0 1px 3px rgba(0,0,0,0.02)',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'vintage-terminal',
+                name: 'Classic Retro Terminal',
+                vietnameseName: 'Màn Hình Phosphor',
+                category: 'creative',
+                categoryLabel: 'Khoa học / Geek',
+                description: 'Màu phosphor xanh lục sáng rực đơn sắc trên nền đen tối sẫm, khơi gợi cảm hứng viết code của các máy tính huyền thoại năm 1980.',
+                font: 'font-firacode',
+                fontLabel: 'Fira Code (Monospace)',
+                styles: {
+                    bgApp: '#000000',
+                    bgCard: '#000000',
+                    borderColor: '#33ff33',
+                    borderWidth: '1px',
+                    textMain: '#33ff33',
+                    textMuted: '#33ff33a0',
+                    primaryBtn: '#33ff33',
+                    primaryBtnHover: '#22cc22',
+                    primaryBtnText: '#000000',
+                    primaryLight: '#051a05',
+                    primaryLightText: '#33ff33',
+                    tagBg: '#000000',
+                    tagText: '#33ff33',
+                    tagBorder: '#33ff33a0',
+                    sidebarActiveBg: '#33ff3320',
+                    sidebarActiveText: '#33ff33',
+                    sidebarActiveBorder: '#33ff33',
+                    heroBg: '#000000',
+                    heroText: '#33ff33',
+                    cardHoverBorder: '#33ff33',
+                    cardHoverShadow: '0 0 10px rgba(51, 255, 51, 0.2)',
+                    borderRadius: '0px',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'solarized-comfortable',
+                name: 'Solarized Comfortable',
+                vietnameseName: 'Nắng Ấm Thư Thái',
+                category: 'comfort',
+                categoryLabel: 'Giảm lóa mắt / Thư thái',
+                description: 'Hệ màu Solarized chuẩn mực với tông vàng cát cổ và xám trầm nhã nhặn. Triệt tiêu hoàn toàn ánh sáng xanh có hại cho võng mạc.',
+                font: 'font-merriweather',
+                fontLabel: 'Merriweather (Serif)',
+                styles: {
+                    bgApp: '#fdf6e3',
+                    bgCard: '#eee8d5',
+                    borderColor: '#93a1a144',
+                    borderWidth: '1px',
+                    textMain: '#073642',
+                    textMuted: '#586e75',
+                    primaryBtn: '#268bd2',
+                    primaryBtnHover: '#1d6fa8',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#eee8d5',
+                    primaryLightText: '#b58900',
+                    tagBg: '#fdf6e3',
+                    tagText: '#cb4b16',
+                    tagBorder: '#93a1a166',
+                    sidebarActiveBg: '#e4dbcd',
+                    sidebarActiveText: '#073642',
+                    sidebarActiveBorder: '#268bd2',
+                    heroBg: 'linear-gradient(135deg, #cb4b16, #b58900)',
+                    heroText: '#fdf6e3',
+                    cardHoverBorder: '#93a1a1',
+                    cardHoverShadow: 'none',
+                    borderRadius: '0.75rem',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'lavender-fields',
+                name: 'Dreamy Lavender',
+                vietnameseName: 'Oải Hương Mộng Mơ',
+                category: 'comfort',
+                categoryLabel: 'Mơ mộng / Nhẹ nhàng',
+                description: 'Nhẹ dịu tinh tế như những đóa oải hương vùng Provence của Pháp, thích hợp tuyệt vời cho các diễn đàn văn học và triết học nghệ thuật.',
+                font: 'font-inter',
+                fontLabel: 'Inter (Sans-serif)',
+                styles: {
+                    bgApp: '#f5f0fa',
+                    bgCard: '#ffffff',
+                    borderColor: '#e2d5f3',
+                    borderWidth: '1px',
+                    textMain: '#3b2260',
+                    textMuted: '#7c629f',
+                    primaryBtn: '#8a4fde',
+                    primaryBtnHover: '#713bc4',
+                    primaryBtnText: '#ffffff',
+                    primaryLight: '#f1ebfa',
+                    primaryLightText: '#8a4fde',
+                    tagBg: '#f1ebfa',
+                    tagText: '#8a4fde',
+                    tagBorder: '#ebdffc',
+                    sidebarActiveBg: '#e6dbf5',
+                    sidebarActiveText: '#3b2260',
+                    sidebarActiveBorder: '#8a4fde',
+                    heroBg: 'linear-gradient(135deg, #8a4fde, #b99af0)',
+                    heroText: '#ffffff',
+                    cardHoverBorder: '#8a4fde77',
+                    cardHoverShadow: '0 10px 15px rgba(138, 79, 222, 0.05)',
+                    borderRadius: '1.75rem',
+                    boxShadowFlat: '0 2px 4px rgba(138, 79, 222, 0.02)',
+                    transformActive: 'none'
+                }
+            },
+            {
+                id: 'school-chalkboard',
+                name: 'Retro School Chalkboard',
+                vietnameseName: 'Bảng Đen Học Đường',
+                category: 'academic',
+                categoryLabel: 'Học đường / Hoài cổ',
+                description: 'Tái tạo trọn vẹn màu của tấm bảng xanh lá cây truyền thống cùng các đường viền nét phấn trắng mộc mạc và nút phấn vàng rực.',
+                font: 'font-merriweather',
+                fontLabel: 'Merriweather (Serif)',
+                styles: {
+                    bgApp: '#102217',
+                    bgCard: '#152b1e',
+                    borderColor: '#3a5a45',
+                    borderWidth: '2px',
+                    textMain: '#ffffff',
+                    textMuted: '#a3c9b4',
+                    primaryBtn: '#f3ff33',
+                    primaryBtnHover: '#d5e022',
+                    primaryBtnText: '#102217',
+                    primaryLight: '#1b3827',
+                    primaryLightText: '#f3ff33',
+                    tagBg: '#1b3827',
+                    tagText: '#ffffff',
+                    tagBorder: '#3a5a45',
+                    sidebarActiveBg: '#234a33',
+                    sidebarActiveText: '#f3ff33',
+                    sidebarActiveBorder: '#f3ff33',
+                    heroBg: '#1b3827',
+                    heroText: '#f3ff33',
+                    cardHoverBorder: '#f3ff33a0',
+                    cardHoverShadow: 'none',
+                    borderRadius: '4px',
+                    boxShadowFlat: 'none',
+                    transformActive: 'none'
+                }
+            }
+        ];
+
+        // --- TRẠNG THÁI HIỆN TẠI ---
+        let currentThemeId = 'classic-scholar';
+        let currentSandboxTab = 'tailwind'; // tailwind | css
+        let activeTab = 'tab-demo'; // tab-demo | tab-settings
+
+        // --- HÀM THAY ĐỔI TAB HOẠT ĐỘNG ---
+        function switchTab(tabId) {
+            activeTab = tabId;
+            const btnDemo = document.getElementById('btn-tab-demo');
+            const btnSettings = document.getElementById('btn-tab-settings');
+            const panelDemo = document.getElementById('panel-demo');
+            const panelSettings = document.getElementById('panel-settings');
+
+            if (tabId === 'tab-demo') {
+                // Kích hoạt nút tab trang chủ
+                btnDemo.className = "flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-btn-primary shadow-sm theme-transition";
+                btnSettings.className = "flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-text-muted hover:theme-text-main theme-transition";
+                
+                panelDemo.classList.remove('hidden');
+                panelSettings.classList.add('hidden');
+            } else {
+                // Kích hoạt nút tab cài đặt
+                btnSettings.className = "flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-btn-primary shadow-sm theme-transition";
+                btnDemo.className = "flex-1 md:flex-none px-5 py-2.5 theme-rounded-pill font-extrabold flex items-center justify-center gap-2 transition-all theme-text-muted hover:theme-text-main theme-transition";
+                
+                panelSettings.classList.remove('hidden');
+                panelDemo.classList.add('hidden');
+            }
+        }
+
+        // --- HÀM KHỞI TẠO CÁC CARD TRONG TAB CÀI ĐẶT ---
+        function drawSettingsThemes(filterCat = 'all') {
+            const grid = document.getElementById('settings-themes-grid');
+            grid.innerHTML = '';
+
+            MASTER_THEMES.forEach(theme => {
+                // Lọc theo phân mục
+                if (filterCat !== 'all' && theme.category !== filterCat) return;
+
+                const isCurrent = theme.id === currentThemeId;
+
+                // Tạo thẻ Card của từng theme
+                const card = document.createElement('div');
+                card.id = `setting-card-${theme.id}`;
+                card.onclick = () => selectActiveTheme(theme.id);
+                
+                // Class cấu trúc bọc ngoài của thẻ cài đặt
+                card.className = `theme-transition p-5 border theme-bg-card theme-border theme-rounded cursor-pointer hover:scale-[1.01] flex flex-col justify-between h-56 transition-all ${
+                    isCurrent 
+                    ? 'ring-2 ring-indigo-500 shadow-xl' 
+                    : 'opacity-90 hover:opacity-100 hover:shadow-md'
+                }`;
+
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-[10px]">
+                            <span class="font-extrabold uppercase opacity-60">${theme.categoryLabel}</span>
+                            <span class="font-mono opacity-50">${theme.fontLabel.split(' ')[0]}</span>
+                        </div>
+                        <div>
+                            <h4 class="font-black text-sm text-theme-main flex items-center gap-2">
+                                ${theme.vietnameseName}
+                                ${isCurrent ? '<span class="text-[9px] bg-emerald-500 text-white px-1.5 py-0.5 rounded-full font-bold">● Đang Bật</span>' : ''}
+                            </h4>
+                            <p class="text-[11px] text-theme-muted theme-transition mt-1 line-clamp-3 leading-relaxed">
+                                ${theme.description}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Palette Swatch & Action -->
+                    <div class="flex items-center justify-between border-t border-slate-500/10 pt-3 mt-2">
+                        <div class="flex -space-x-1.5">
+                            <span class="w-4 h-4 rounded-full border border-slate-950/20" style="background-color: ${theme.styles.bgApp}"></span>
+                            <span class="w-4 h-4 rounded-full border border-slate-950/20" style="background-color: ${theme.styles.bgCard}"></span>
+                            <span class="w-4 h-4 rounded-full border border-slate-950/20" style="background-color: ${theme.styles.primaryBtn}"></span>
+                            <span class="w-4 h-4 rounded-full border border-slate-950/20" style="background-color: ${theme.styles.tagBg}"></span>
+                        </div>
+                        <span class="text-[10px] font-bold theme-text-muted hover:underline">Áp dụng Theme →</span>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // --- BỘ LỌC THỂ LOẠI THEME ---
+        function filterPresetCategory(catName) {
+            drawSettingsThemes(catName);
+        }
+
+        // --- HÀM THỰC THI CHUYỂN ĐỔI THEME TOÀN CỤC (:root) ---
+        function selectActiveTheme(themeId) {
+            currentThemeId = themeId;
+
+            // Truy tìm cấu hình màu sắc & thông số
+            const theme = MASTER_THEMES.find(t => t.id === themeId);
+            if (!theme) return;
+
+            // Cập nhật nhãn thông tin theme ở Header
+            document.getElementById('active-theme-pill').innerText = `Theme: ${theme.vietnameseName}`;
+
+            // Cập nhật giá trị biến CSS trên thẻ :root để biến đổi TOÀN BỘ TRANG WEB
+            const root = document.documentElement;
+            const s = theme.styles;
+
+            root.style.setProperty('--bg-app', s.bgApp);
+            root.style.setProperty('--bg-card', s.bgCard);
+            root.style.setProperty('--border-color', s.borderColor);
+            root.style.setProperty('--border-width', s.borderWidth);
+            root.style.setProperty('--text-main', s.textMain);
+            root.style.setProperty('--text-muted', s.textMuted);
+            root.style.setProperty('--primary-btn', s.primaryBtn);
+            root.style.setProperty('--primary-btn-hover', s.primaryBtnHover);
+            root.style.setProperty('--primary-btn-text', s.primaryBtnText);
+            root.style.setProperty('--primary-light', s.primaryLight);
+            root.style.setProperty('--primary-light-text', s.primaryLightText);
+            root.style.setProperty('--tag-bg', s.tagBg);
+            root.style.setProperty('--tag-text', s.tagText);
+            root.style.setProperty('--tag-border', s.tagBorder);
+            root.style.setProperty('--sidebar-active-bg', s.sidebarActiveBg);
+            root.style.setProperty('--sidebar-active-text', s.sidebarActiveText);
+            root.style.setProperty('--sidebar-active-border', s.sidebarActiveBorder);
+            root.style.setProperty('--hero-bg', s.heroBg);
+            root.style.setProperty('--hero-text', s.heroText);
+            root.style.setProperty('--card-hover-border', s.cardHoverBorder);
+            root.style.setProperty('--card-hover-shadow', s.cardHoverShadow);
+            root.style.setProperty('--border-radius', s.borderRadius);
+            root.style.setProperty('--box-shadow-flat', s.boxShadowFlat);
+            root.style.setProperty('--transform-active', s.transformActive);
+
+            // Cập nhật phông chữ toàn cục của thẻ Body
+            document.body.className = document.body.className.replace(/font-\w+/, theme.font);
+            root.style.setProperty('--font-family', `var(--tw-${theme.font})`);
+
+            // Vẽ lại danh sách card để cập nhật dấu "Đang bật"
+            drawSettingsThemes();
+
+            // Cập nhật khung kết xuất cấu hình code
+            updateSandboxCodeDisplay();
+        }
+
+        // --- CHUYỂN ĐỔI TAB SANDBOX EXPORT CODE ---
+        function switchSandboxTab(tabName) {
+            currentSandboxTab = tabName;
+            const btnTw = document.getElementById('sb-tab-tw');
+            const btnCss = document.getElementById('sb-tab-css');
+
+            if (tabName === 'tailwind') {
+                btnTw.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg theme-btn-primary theme-transition shadow-sm";
+                btnCss.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-500/10 theme-text-main hover:bg-slate-500/20 theme-transition";
+            } else {
+                btnCss.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg theme-btn-primary theme-transition shadow-sm";
+                btnTw.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-slate-500/10 theme-text-main hover:bg-slate-500/20 theme-transition";
+            }
+
+            updateSandboxCodeDisplay();
+        }
+
+        // --- CẬP NHẬT NỘI DUNG CODE KẾT XUẤT ---
+        function updateSandboxCodeDisplay() {
+            const theme = MASTER_THEMES.find(t => t.id === currentThemeId);
+            if (!theme) return;
+
+            const pre = document.getElementById('sandbox-code-pre');
+            const s = theme.styles;
+
+            if (currentSandboxTab === 'tailwind') {
+                pre.textContent = `// Cấu hình Tailwind cho chủ đề: "${theme.name}"
+module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        edu: {
+          bg: '${s.bgApp}',
+          card: '${s.bgCard}',
+          border: '${s.borderColor}',
+          textMain: '${s.textMain}',
+          textMuted: '${s.textMuted}',
+          primary: '${s.primaryBtn}',
+          primaryHover: '${s.primaryBtnHover}',
+          tagBg: '${s.tagBg}',
+          tagText: '${s.tagText}',
+          activeBg: '${s.sidebarActiveBg}',
+          activeText: '${s.sidebarActiveText}'
+        }
+      },
+      borderRadius: {
+        'edu-radius': '${s.borderRadius}'
+      }
+    }
+  }
+}`;
+            } else {
+                pre.textContent = `/* CSS Variables cho chủ đề: "${theme.name}" */
+:root {
+  --bg-app: ${s.bgApp};
+  --bg-card: ${s.bgCard};
+  --border-color: ${s.borderColor};
+  --border-width: ${s.borderWidth};
+  --text-main: ${s.textMain};
+  --text-muted: ${s.textMuted};
+  --primary-btn: ${s.primaryBtn};
+  --primary-btn-hover: ${s.primaryBtnHover};
+  --tag-bg: ${s.tagBg};
+  --tag-text: ${s.tagText};
+  --border-radius: ${s.borderRadius};
+}`;
+            }
+        }
+
+        // --- COPY MÃ CODE TRONG SANDBOX ---
+        function copyActiveCode() {
+            const code = document.getElementById('sandbox-code-pre').textContent;
+            
+            // Cơ chế sao chép tương thích Iframe
+            const textarea = document.createElement('textarea');
+            textarea.value = code;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            alertBox('Đã sao chép cấu hình Theme thành công vào khay nhớ tạm!');
+        }
+
+        // --- HỘP THÔNG BÁO TỰ CHẾ ĐẸP MẮT ---
+        function alertBox(message) {
+            document.getElementById('custom-alert-message').innerText = message;
+            const container = document.getElementById('custom-alert-box');
+            container.classList.remove('hidden');
+            container.classList.add('flex');
+        }
+
+        function closeAlertBox() {
+            const container = document.getElementById('custom-alert-box');
+            container.classList.remove('flex');
+            container.classList.add('hidden');
+        }
+
+        // --- KHỞI CHẠY KHU VỰC TRẠNG THÁI BAN ĐẦU ---
+        window.onload = function() {
+            // Hiển thị 15 card cài đặt
+            drawSettingsThemes();
+            // Đặt mặc định theme đầu tiên hoạt động
+            selectActiveTheme('classic-scholar');
+        };
+    </script>
+</body>
+</html>
